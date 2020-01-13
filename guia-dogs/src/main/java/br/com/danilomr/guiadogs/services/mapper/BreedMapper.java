@@ -1,5 +1,6 @@
 package br.com.danilomr.guiadogs.services.mapper;
 
+import br.com.danilomr.guiadogs.controllers.dto.BreedDTO;
 import br.com.danilomr.guiadogs.repositories.data.BreedData;
 import br.com.danilomr.guiadogs.services.entity.Breed;
 
@@ -25,5 +26,17 @@ public class BreedMapper {
         return breedDataList.stream()
                 .map(breedData -> toEntity(breedData))
                 .collect(Collectors.toList());
+    }
+
+    public static Breed toEntity(final BreedDTO breedDTO) {
+
+        return Breed.builder()
+                .id(breedDTO.getId())
+                .breedName(breedDTO.getBreedName())
+                .knownAs(breedDTO.getKnownAs())
+                .description(breedDTO.getDescription())
+                .images(breedDTO.getImages())
+                .mainImage(breedDTO.getMainImage())
+                .build();
     }
 }

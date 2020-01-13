@@ -1,4 +1,4 @@
-package br.com.danilomr.guiadogs.controllers.dto.response;
+package br.com.danilomr.guiadogs.controllers.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

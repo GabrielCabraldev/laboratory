@@ -1,22 +1,27 @@
 package br.com.danilomr.guiadogs.controllers;
 
+import br.com.danilomr.guiadogs.controllers.dto.BreedDTO;
+import br.com.danilomr.guiadogs.controllers.dto.BreedListDTO;
 import br.com.danilomr.guiadogs.controllers.dto.mapper.BreedDTOMapper;
-import br.com.danilomr.guiadogs.controllers.dto.response.BreedDTO;
-import br.com.danilomr.guiadogs.controllers.dto.response.BreedListDTO;
 import br.com.danilomr.guiadogs.exceptions.BreedNotFoundException;
 import br.com.danilomr.guiadogs.services.BreedService;
 import br.com.danilomr.guiadogs.services.entity.Breed;
+import br.com.danilomr.guiadogs.services.mapper.BreedMapper;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 @RestController
 @RequestMapping(path = "/breed")
+@Validated
 public class BreedController {
 
     @Autowired
@@ -41,5 +46,25 @@ public class BreedController {
 
         Breed breed = breedService.findById(id);
         return ResponseEntity.ok(BreedDTOMapper.toDTO(breed));
+    }
+
+    @PostMapping(path = "/save")
+    public ResponseEntity<BreedDTO> save(@Valid @RequestBody final BreedDTO breedDTO) {
+        Breed breed = BreedMapper.toEntity(breedDTO);
+        breed = breedService.save(breed);
+
+        return ResponseEntity.ok(BreedDTOMapper.toDTO(breed));
+    }
+
+    @GetMapping(path = "/pic/{id}", produces = MediaType.IMAGE_JPEG_VALUE)
+    public @ResponseBody byte[] getPic(@PathVariable("id") final Long id) throws IOException, BreedNotFoundException {
+
+        Breed breed = breedService.findById(id);
+
+        InputStream in = getClass()
+                .getResourceAsStream(breed.getMainImage());
+
+        return IOUtils.toByteArray(in);
+
     }
 }
