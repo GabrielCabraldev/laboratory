@@ -4,6 +4,7 @@ import br.com.danilomr.guiadogs.controllers.dto.BreedDTO;
 import br.com.danilomr.guiadogs.controllers.dto.BreedListDTO;
 import br.com.danilomr.guiadogs.controllers.dto.mapper.BreedDTOMapper;
 import br.com.danilomr.guiadogs.exceptions.BreedNotFoundException;
+import br.com.danilomr.guiadogs.exceptions.InvalidKindException;
 import br.com.danilomr.guiadogs.services.BreedService;
 import br.com.danilomr.guiadogs.services.entity.Breed;
 import br.com.danilomr.guiadogs.services.mapper.BreedMapper;
@@ -49,7 +50,7 @@ public class BreedController {
     }
 
     @PostMapping(path = "/save")
-    public ResponseEntity<BreedDTO> save(@Valid @RequestBody final BreedDTO breedDTO) {
+    public ResponseEntity<BreedDTO> save(@Valid @RequestBody final BreedDTO breedDTO) throws InvalidKindException {
         Breed breed = BreedMapper.toEntity(breedDTO);
         breed = breedService.save(breed);
 
@@ -65,6 +66,12 @@ public class BreedController {
                 .getResourceAsStream(breed.getMainImage());
 
         return IOUtils.toByteArray(in);
+    }
 
+    @GetMapping(path = "/kind/{kind}")
+    public ResponseEntity<BreedListDTO> searchBreedsByKind(@PathVariable("kind") final String kind) {
+
+        List<Breed> breedList = breedService.findByKind(kind);
+        return ResponseEntity.ok(BreedDTOMapper.toDTOList(breedList));
     }
 }

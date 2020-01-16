@@ -1,5 +1,6 @@
 package br.com.danilomr.guiadogs.controllers.dto;
 
+import br.com.danilomr.guiadogs.enums.KindEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,6 +27,9 @@ public class BreedDTO {
 
     @NotBlank
     private String mainImage;
+
+    @NotBlank
+    private String kind;
 
     private String images;
 }

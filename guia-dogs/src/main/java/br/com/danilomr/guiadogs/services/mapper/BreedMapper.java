@@ -1,6 +1,7 @@
 package br.com.danilomr.guiadogs.services.mapper;
 
 import br.com.danilomr.guiadogs.controllers.dto.BreedDTO;
+import br.com.danilomr.guiadogs.enums.KindEnum;
 import br.com.danilomr.guiadogs.repositories.data.BreedData;
 import br.com.danilomr.guiadogs.services.entity.Breed;
 
@@ -18,6 +19,7 @@ public class BreedMapper {
                 .description(breedData.getDescription())
                 .images(breedData.getImages())
                 .mainImage(breedData.getMainImage())
+                .kind(KindEnum.valueOf(breedData.getKind()))
                 .build();
     }
 
@@ -37,6 +39,7 @@ public class BreedMapper {
                 .description(breedDTO.getDescription())
                 .images(breedDTO.getImages())
                 .mainImage(breedDTO.getMainImage())
+                .kind(KindEnum.contains(breedDTO.getKind()) ? KindEnum.valueOf(breedDTO.getKind()) : null)
                 .build();
     }
 }

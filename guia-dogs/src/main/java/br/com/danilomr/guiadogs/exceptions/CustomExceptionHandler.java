@@ -26,6 +26,15 @@ public class CustomExceptionHandler {
     }
 
     @ResponseBody
+    @ExceptionHandler(InvalidKindException.class)
+    protected ResponseEntity<DefaultExceptionResponseDTO> handleInvalidKindException(final InvalidKindException ex) {
+        DefaultExceptionResponseDTO response = buildResponse(ex.getError().getMessage(), ex.getError().getCode(), null);
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(response);
+    }
+
+    @ResponseBody
     @ExceptionHandler(HttpMessageNotReadableException.class)
     protected ResponseEntity<DefaultExceptionResponseDTO> handleHttpMessageNotReadableException(final HttpMessageNotReadableException ex) {
         DefaultExceptionResponseDTO response = buildResponse(ExceptionEnum.INVALID_BODY_REQUEST.getMessage(),

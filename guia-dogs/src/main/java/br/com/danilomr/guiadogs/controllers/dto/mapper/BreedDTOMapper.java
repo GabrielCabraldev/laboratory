@@ -18,6 +18,7 @@ public class BreedDTOMapper {
                 .knownAs(breed.getKnownAs())
                 .images(breed.getImages())
                 .mainImage(breed.getMainImage())
+                .kind(breed.getKind().name())
                 .build();
     }
 
